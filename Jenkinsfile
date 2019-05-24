@@ -10,10 +10,10 @@ pipeline {
 
     environment {
         ORG_NAME = "deors"
-        APP_NAME = "ezequiel-workshop-pipelines"
+        APP_NAME = "workshop-pipelines"
         APP_CONTEXT_ROOT = "/"
         APP_LISTENING_PORT = "8080"
-        TEST_CONTAINER_NAME = "ci-${APP_NAME}-${BUILD_NUMBER}"
+        TEST_CONTAINER_NAME = "ci-${APP_NAME}-ezequiel-${BUILD_NUMBER}"
         DOCKER_HUB = credentials("${ORG_NAME}-docker-hub")
     }
 
