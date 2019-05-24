@@ -25,14 +25,14 @@ pipeline {
             }
         }
 
-//        stage('Unit tests') {
-//            steps {
-//                echo "-=- execute unit tests -=-"
-//                sh "./mvnw test"
-//                junit 'target/surefire-reports/*.xml'
-//                jacoco execPattern: 'target/jacoco.exec'
-//            }
-//        }
+        stage('Unit tests') {
+            steps {
+                echo "-=- execute unit tests -=-"
+                sh "./mvnw test"
+                junit 'target/surefire-reports/*.xml'
+                jacoco execPattern: 'target/jacoco.exec'
+            }
+        }
 //
 //        stage('Mutation tests') {
 //            steps {
