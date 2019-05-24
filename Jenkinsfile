@@ -10,7 +10,7 @@ pipeline {
 
     environment {
         ORG_NAME = "deors"
-        APP_NAME = "workshop-pipelines"
+        APP_NAME = "ezequiel-workshop-pipelines"
         APP_CONTEXT_ROOT = "/"
         APP_LISTENING_PORT = "8080"
         TEST_CONTAINER_NAME = "ci-${APP_NAME}-${BUILD_NUMBER}"
