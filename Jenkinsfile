@@ -81,6 +81,46 @@ pipeline {
                 perfReport sourceDataFiles: 'target/jmeter/results/*.csv', errorUnstableThreshold: 0, errorFailedThreshold: 5, errorUnstableResponseTimeThreshold: 'default.jtl:100'
             }
         }
+
+        stage('Dependency vulnerability tests') {
+            steps {
+                echo "-=- run dependency vulnerability tests -=-"
+                sh "./mvnw dependency-check:check"
+                dependencyCheckPublisher failedTotalHigh: '0', unstableTotalHigh: '1', failedTotalNormal: '2', unstableTotalNormal: '5'
+            }
+        }
+
+        stage('Code inspection & quality gate') {
+            steps {
+                echo "-=- run code inspection & check quality gate -=-"
+                withSonarQubeEnv('ci-sonarqube') {
+                    sh "./mvnw sonar:sonar"
+                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    //waitForQualityGate abortPipeline: true
+                    script {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK' && qg.status != 'WARN') {
+                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Push Docker image') {
+            steps {
+                echo "-=- push Docker image -=-"
+                sh "./mvnw docker:push"
+            }
+        }
+
+        post {
+            always {
+                echo "-=- remove deployment -=-"
+                sh "docker stop ${TEST_CONTAINER_NAME}"
+            }
+        }
     }
 
 //    post {
