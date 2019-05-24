@@ -115,15 +115,12 @@ pipeline {
             }
         }
 
-        post {
-            always {
-                echo "-=- remove deployment -=-"
-                sh "docker stop ${TEST_CONTAINER_NAME}"
-            }
-        }
     }
 
-//    post {
-//        // post-process activities, e.g. cleanup or publish
-//    }
+    post {
+        always {
+            echo "-=- remove deployment -=-"
+            sh "docker stop ${TEST_CONTAINER_NAME}"
+        }
+    }
 }
